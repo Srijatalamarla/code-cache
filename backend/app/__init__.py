@@ -19,6 +19,7 @@ def create_app(config_object=None):
         from app.config import Config
         app.config.from_object(Config)
     
+    CORS(app)
     db.init_app(app)
     
     from app.routes.snippets import bp
