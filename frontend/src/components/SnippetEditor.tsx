@@ -5,6 +5,10 @@ import { useCreateSnippet, useUpdateSnippet } from "../hooks/useSnippets";
 import TagInput from "./TagInput";
 import { Check, Copy, RefreshCw } from "lucide-react";
 
+import CodeMirror from "@uiw/react-codemirror";
+import { oneDark } from "@codemirror/theme-one-dark";
+import { getLanguageExtension } from "../utils/languageExtensions";
+
 interface Props {
   selected: Snippet | null;
   onClear: () => void;
@@ -17,12 +21,6 @@ const empty: SnippetCreate = {
   tags: [],
   starred: false,
 };
-
-// generate line numbers based on code
-function getLineNumbers(code: string): number[] {
-  const lines = code.split("\n").length;
-  return Array.from({ length: Math.max(lines, 10) }, (_, i) => i + 1);
-}
 
 export default function SnippetEditor({ selected, onClear }: Props) {
   const [form, setForm] = useState<SnippetCreate>(empty);
@@ -129,25 +127,24 @@ export default function SnippetEditor({ selected, onClear }: Props) {
         </div>
       </div>
 
-      {/* Code Area with line numbers */}
-      <div className="flex flex-1 bg-gray-950 overflow-hidden">
-
-        {/* Line numbers */}
-        <div className="select-none text-right pr-3 pl-3 pt-3 text-gray-600 font-mono text-sm leading-6 bg-gray-950">
-          {getLineNumbers(form.code).map(n => (
-            <div key={n}>{n}</div>
-          ))}
-        </div>
-
-        {/* Code input */}
-        <textarea
+      {/* Code Area */}
+      <div className="flex-1 overflow-hidden">
+        <CodeMirror
           value={form.code}
-          onChange={e => setForm(f => ({ ...f, code: e.target.value }))}
-          placeholder="Paste your code here..."
-          spellCheck={false}
-          className="flex-1 bg-transparent text-green-400 font-mono text-sm pt-3 pr-3 outline-none resize-none leading-6"
+          height="100%"
+          theme={oneDark}
+          extensions={[getLanguageExtension(form.language)]}
+          onChange={value => setForm(f => ({ ...f, code: value }))}
+          style={{ height: "100%", fontSize: "16px" }}
+          basicSetup={{
+            lineNumbers: true,
+            foldGutter: false,
+            dropCursor: false,
+            allowMultipleSelections: false,
+            indentOnInput: true,
+            tabSize: 2,
+          }}
         />
-
       </div>
 
       <div className="flex items-center justify-between px-4 py-3 border-t border-gray-200">
