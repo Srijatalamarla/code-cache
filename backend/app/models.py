@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from app import db
 
@@ -12,7 +12,7 @@ class Snippet(db.Model):
     language = db.Column(db.String(20), nullable=False, default='plaintext')
     starred = db.Column(db.Boolean, default=False)
     _tags = db.Column(db.Text, default='[]')  # JSON string '["flask","api"]'
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     @property
     def tags(self):
