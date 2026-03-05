@@ -2,6 +2,13 @@
 
 A code snippet manager. Save, tag, search, and copy code snippets instantly.
 
+## Flow
+
+<img width="1517" height="683" alt="image" src="https://github.com/user-attachments/assets/3d3d475b-ee0e-4c06-ae72-f90cce5c0b7a" />
+<img width="1582" height="687" alt="Response-Flow" src="https://github.com/user-attachments/assets/f8894029-2c05-48bc-9321-fa1e749ac827" />
+
+
+
 ## Quick Start
 
 ### Backend
