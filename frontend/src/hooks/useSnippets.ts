@@ -1,11 +1,15 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as api from "../api/snippets";
 import type { SnippetCreate, SnippetUpdate } from "../types/snippet";
 
 export const useSnippets = (q?: string, lang?: string) => 
     useQuery({
         queryKey: ["snippets", q, lang],
-        queryFn: () => q || lang ? api.searchSnippets(q ?? "", lang) : api.fetchSnippets(),
+        queryFn: () => 
+            q || lang ? 
+                api.searchSnippets(q ?? "", lang) 
+                : api.fetchSnippets(),
+        placeholderData: keepPreviousData,
     });
 
 export const useCreateSnippet = () => {
